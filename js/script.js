@@ -84,6 +84,28 @@ new Vue({
           const [movedCard] = this.columns[fromColumnIndex].splice(cardIndex, 1);
           this.columns[toColumnIndex].push(movedCard);
         }
+      },
+      // Сохранение в localStorage
+      saveData() {
+        const data = {
+          columns: this.columns,
+          nextCardId: this.nextCardId,
+          isFirstColumnLocked: this.isFirstColumnLocked
+        };
+        localStorage.setItem('notesAppData', JSON.stringify(data));
+      },
+      // Загрузка из localStorage
+      loadData() {
+        const data = JSON.parse(localStorage.getItem('notesAppData'));
+        if (data) {
+          this.columns = data.columns;
+          this.nextCardId = data.nextCardId;
+          this.isFirstColumnLocked = data.isFirstColumnLocked;
+        }
       }
+    },
+    // Загружаем данные при запуске приложения
+    created() {
+      this.loadData();
     }
   });
