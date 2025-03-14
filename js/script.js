@@ -8,7 +8,8 @@ new Vue({
       ],
       nextCardId: 1, // Уникальный ID для карточек
       newCardTitle: '', 
-      newCardItems: [{ text: '' }, { text: '' }, { text: '' }] 
+      newCardItems: [{ text: '' }, { text: '' }, { text: '' }], // Пункты новой карточки
+      isFirstColumnLocked: false // Блокировка первого столбца
     },
     computed: {
       // Проверка валидности карточки
@@ -23,6 +24,10 @@ new Vue({
       // Проверка, заполнен ли первый столбец
       isFirstColumnFull() {
         return this.columns[0].length >= 3;
+      },
+      // Проверка, заполнен ли второй столбец
+      isSecondColumnFull() {
+        return this.columns[1].length >= 5;
       }
     },
     methods: {
@@ -40,7 +45,7 @@ new Vue({
       },
       // Добавить новую карточку в первый столбец
       addCard() {
-        if (this.isCardValid && !this.isFirstColumnFull) {
+        if (this.isCardValid && !this.isFirstColumnFull && !this.isFirstColumnLocked) {
           this.columns[0].push({
             id: this.nextCardId++,
             title: this.newCardTitle,
@@ -52,18 +57,24 @@ new Vue({
           this.newCardItems = [{ text: '' }, { text: '' }, { text: '' }];
         }
       },
-      // Обновить статус карточки (перемещение между столбцами)
+      // Перемещение между столбцами
       updateCardStatus(card) {
         const completedItems = card.items.filter(item => item.completed).length;
         const totalItems = card.items.length;
         const completionPercentage = (completedItems / totalItems) * 100;
   
-        // Перемещение карточки в зависимости от процента выполнения
+        // Перемещение карточки в зависимости от процента 
         if (completionPercentage > 50 && completionPercentage < 100) {
-          this.moveCard(card, 0, 1); // Из первого столбца во второй
+          if (!this.isSecondColumnFull) {
+            this.moveCard(card, 0, 1); // Из первого во второй
+          } else {
+            this.isFirstColumnLocked = true; // Блокируем первый
+            alert('Второй столбец заполнен! Первый столбец заблокирован.');
+          }
         } else if (completionPercentage === 100) {
-          this.moveCard(card, 1, 2); // Из второго столбца в третий
-          card.completedDate = new Date().toLocaleString(); // Добавляем дату завершения
+          this.moveCard(card, 1, 2); // Из второго в третий
+          card.completedDate = new Date().toLocaleString(); // Дата завершения
+          this.isFirstColumnLocked = false; // Разблок первого
         }
       },
       // Перемещение карточки между столбцами
