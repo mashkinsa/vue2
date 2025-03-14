@@ -20,10 +20,10 @@
         <button @click="removeItem(index)" class="remove-item-btn">×</button>
       </div>
       <button @click="addItem" class="add-item-btn">Добавить пункт</button>
-      <button @click="addCard" class="add-card-btn" :disabled="!isCardValid">Добавить карточку</button>
+      <button @click="addCard" class="add-card-btn" :disabled="!isCardValid || isFirstColumnFull">Добавить карточку</button>
       <p v-if="!isCardValid" class="error-message">Карточка должна содержать от 3 до 5 пунктов.</p>
+      <p v-if="isFirstColumnFull" class="error-message">Первый столбец заполнен (максимум 3 карточки).</p>
     </div>
-
 
     <div class="columns">
       <div class="column">
@@ -32,7 +32,7 @@
           <h3>{{ card.title }}</h3>
           <ul>
             <li v-for="(item, i) in card.items" :key="i">
-              <input type="checkbox" v-model="item.completed">
+              <input type="checkbox" v-model="item.completed" @change="updateCardStatus(card)">
               <span :class="{ completed: item.completed }">{{ item.text }}</span>
             </li>
           </ul>
@@ -45,7 +45,7 @@
           <h3>{{ card.title }}</h3>
           <ul>
             <li v-for="(item, i) in card.items" :key="i">
-              <input type="checkbox" v-model="item.completed">
+              <input type="checkbox" v-model="item.completed" @change="updateCardStatus(card)">
               <span :class="{ completed: item.completed }">{{ item.text }}</span>
             </li>
           </ul>
@@ -58,10 +58,11 @@
           <h3>{{ card.title }}</h3>
           <ul>
             <li v-for="(item, i) in card.items" :key="i">
-              <input type="checkbox" v-model="item.completed">
+              <input type="checkbox" v-model="item.completed" @change="updateCardStatus(card)">
               <span :class="{ completed: item.completed }">{{ item.text }}</span>
             </li>
           </ul>
+          <p v-if="card.completedDate">Завершено: {{ card.completedDate }}</p>
         </div>
       </div>
     </div>
