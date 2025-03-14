@@ -2,12 +2,12 @@ new Vue({
     el: '#app',
     data: {
       columns: [
-        [], 
-        [], 
-        []  
+        [], // Первый столбец 
+        [], // Второй столбец 
+        []  // Третий столбец 
       ],
       nextCardId: 1, // Уникальный ID для карточек
-      newCardTitle: '', 
+      newCardTitle: '', // Заголовок новой карточки
       newCardItems: [{ text: '' }, { text: '' }, { text: '' }], // Пункты новой карточки
       isFirstColumnLocked: false // Блокировка первого столбца
     },
@@ -55,27 +55,29 @@ new Vue({
           // Сбросить форму
           this.newCardTitle = '';
           this.newCardItems = [{ text: '' }, { text: '' }, { text: '' }];
+          this.saveData(); // Сохраняем данные
         }
       },
-      // Перемещение между столбцами
+      // Обновить статус карточки (перемещение между столбцами)
       updateCardStatus(card) {
         const completedItems = card.items.filter(item => item.completed).length;
         const totalItems = card.items.length;
         const completionPercentage = (completedItems / totalItems) * 100;
   
-        // Перемещение карточки в зависимости от процента 
+        // Перемещение карточки в зависимости от процента выполнения
         if (completionPercentage > 50 && completionPercentage < 100) {
           if (!this.isSecondColumnFull) {
-            this.moveCard(card, 0, 1); // Из первого во второй
+            this.moveCard(card, 0, 1); // Из первого столбца во второй
           } else {
-            this.isFirstColumnLocked = true; // Блокируем первый
+            this.isFirstColumnLocked = true; // Блокируем первый столбец
             alert('Второй столбец заполнен! Первый столбец заблокирован.');
           }
         } else if (completionPercentage === 100) {
-          this.moveCard(card, 1, 2); // Из второго в третий
-          card.completedDate = new Date().toLocaleString(); // Дата завершения
-          this.isFirstColumnLocked = false; // Разблок первого
+          this.moveCard(card, 1, 2); // Из второго столбца в третий
+          card.completedDate = new Date().toLocaleString(); // Добавляем дату завершения
+          this.isFirstColumnLocked = false; // Разблокируем первый столбец
         }
+        this.saveData(); // Сохраняем данные
       },
       // Перемещение карточки между столбцами
       moveCard(card, fromColumnIndex, toColumnIndex) {
@@ -85,7 +87,7 @@ new Vue({
           this.columns[toColumnIndex].push(movedCard);
         }
       },
-      // Сохранение в localStorage
+      // Сохранение данных в localStorage
       saveData() {
         const data = {
           columns: this.columns,
@@ -94,7 +96,7 @@ new Vue({
         };
         localStorage.setItem('notesAppData', JSON.stringify(data));
       },
-      // Загрузка из localStorage
+      // Загрузка данных из localStorage
       loadData() {
         const data = JSON.parse(localStorage.getItem('notesAppData'));
         if (data) {

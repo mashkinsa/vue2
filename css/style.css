@@ -33,7 +33,7 @@ body {
   }
   
   .remove-item-btn {
-    background-color: #ff4d4d;
+    background-color: #f35555;
     color: white;
     border: none;
     border-radius: 50%;
@@ -41,9 +41,13 @@ body {
     height: 24px;
     cursor: pointer;
   }
-  
+
+  .remove-item-btn:hover {
+    background-color: #fc2b2b;
+  }
+
   .add-item-btn, .add-card-btn {
-    background-color: #4e45a0;
+    background-color: #6e4ca5;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -53,11 +57,11 @@ body {
   }
   
   .add-item-btn:hover, .add-card-btn:hover {
-    background-color: #473f8f;
+    background-color: #4d2d80;
   }
   
   .error-message {
-    color: #ff4d4d;
+    color: #dd2020;
     font-size: 14px;
   }
   
@@ -113,7 +117,7 @@ body {
     text-decoration: line-through;
     color: #888;
   }
-  
+
   .card-move {
     transition: all 0.5s ease;
   }
