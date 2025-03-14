@@ -12,6 +12,19 @@
   <div id="app">
     <h1>To Do</h1>
 
+    <div class="add-card-form">
+      <h2>Добавить новую карточку</h2>
+      <input v-model="newCardTitle" placeholder="Заголовок карточки" class="input-field">
+      <div v-for="(item, index) in newCardItems" :key="index" class="item-input">
+        <input v-model="item.text" :placeholder="'Пункт ' + (index + 1)" class="input-field">
+        <button @click="removeItem(index)" class="remove-item-btn">×</button>
+      </div>
+      <button @click="addItem" class="add-item-btn">Добавить пункт</button>
+      <button @click="addCard" class="add-card-btn" :disabled="!isCardValid">Добавить карточку</button>
+      <p v-if="!isCardValid" class="error-message">Карточка должна содержать от 3 до 5 пунктов.</p>
+    </div>
+
+
     <div class="columns">
       <div class="column">
         <h2>Столбец 1 (до 3 карточек)</h2>
@@ -26,7 +39,6 @@
         </div>
       </div>
 
-
       <div class="column">
         <h2>Столбец 2 (до 5 карточек)</h2>
         <div v-for="(card, index) in columns[1]" :key="card.id" class="card">
@@ -39,7 +51,6 @@
           </ul>
         </div>
       </div>
-
 
       <div class="column">
         <h2>Столбец 3 (без ограничений)</h2>
@@ -55,7 +66,6 @@
       </div>
     </div>
   </div>
-
 
 </body>
 </html>
