@@ -70,7 +70,6 @@ new Vue({
             this.moveCard(card, 0, 1); // Из первого столбца во второй
           } else {
             this.isFirstColumnLocked = true; // Блокируем первый столбец
-            alert('Второй столбец заполнен! Первый столбец заблокирован.');
           }
         } else if (completionPercentage === 100) {
           this.moveCard(card, 1, 2); // Из второго столбца в третий

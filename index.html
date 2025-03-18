@@ -22,12 +22,14 @@
       <button @click="addItem" class="add-item-btn">Добавить пункт</button>
       <button @click="addCard" class="add-card-btn" :disabled="!isCardValid || isFirstColumnFull || isFirstColumnLocked">Добавить карточку</button>
       <p v-if="!isCardValid" class="error-message">Карточка должна содержать от 3 до 5 пунктов.</p>
-      <p v-if="isFirstColumnFull" class="error-message">Первый столбец заполнен (максимум 3 карточки).</p>
+
+  
     </div>
 
     <div class="columns">
       <div class="column" :class="{ locked: isFirstColumnLocked }">
-        <h2>Столбец 1 (до 3 карточек)</h2>
+        <h2>Выполнить (до 3 карточек)</h2>
+        <p v-if="isFirstColumnFull" class="error-message">Первый столбец заполнен (максимум 3 карточки).</p>
         <transition-group name="card-move" tag="div">
           <div v-for="(card, index) in columns[0]" :key="card.id" class="card">
             <h3>{{ card.title }}</h3>
@@ -42,7 +44,8 @@
       </div>
 
       <div class="column">
-        <h2>Столбец 2 (до 5 карточек)</h2>
+        <h2>В работе (до 5 карточек)</h2>
+        <p v-if="isSecondColumnFull" class="error-message">Второй столбец заполнен (максимум 5 карточек).</p>
         <transition-group name="card-move" tag="div">
           <div v-for="(card, index) in columns[1]" :key="card.id" class="card">
             <h3>{{ card.title }}</h3>
@@ -57,7 +60,7 @@
       </div>
 
       <div class="column">
-        <h2>Столбец 3 (без ограничений)</h2>
+        <h2>Готово</h2>
         <transition-group name="card-move" tag="div">
           <div v-for="(card, index) in columns[2]" :key="card.id" class="card">
             <h3>{{ card.title }}</h3>
